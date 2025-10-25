@@ -44,7 +44,6 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Quick Links */}
           <div>
             <h4 className="text-white text-lg font-semibold mb-4">
               Quick Links
@@ -139,7 +138,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Contact Info */}
           <div>
             <h4 className="text-white text-lg font-semibold mb-4">
               Get in Touch
@@ -178,7 +176,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Bottom Bar */}
         <div className="border-t border-gray-700 pt-8 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
           <p className="text-sm text-gray-400">
             © 2025 Pitch Craft. All rights reserved.

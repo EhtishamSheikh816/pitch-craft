@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 
 const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
 
-export default function PitchResult() {
+const PitchResult = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const [pitch, setPitch] = useState(state?.pitch || null);
@@ -26,31 +26,37 @@ export default function PitchResult() {
   const regenerate = async () => {
     if (!ideaData) return;
     setLoading(true);
+
     try {
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
       const prompt = `
-      Regenerate a startup pitch in JSON format:
-      Title: ${ideaData.title}
-      Description: ${ideaData.description}
-      Return JSON with:
-      {
-        "name": "string",
-        "tagline": "string",
-        "elevator_pitch": "string",
-        "problem": "string",
-        "solution": "string",
-        "uvp": "string",
-        "logo_concept": "string"
-      }`;
+You are a startup pitch generator AI.
+Generate a startup pitch strictly in JSON format.
+
+Title: ${ideaData.title}
+Description: ${ideaData.description}
+
+Return ONLY this JSON:
+{
+  "name": "string",
+  "tagline": "string",
+  "elevator_pitch": "string",
+  "problem": "string",
+  "solution": "string",
+  "uvp": "string",
+  "logo_concept": "string"
+}
+`;
 
       const result = await model.generateContent(prompt);
-      const text = await result.response.text();
+      const text =
+        result.response.candidates?.[0]?.content?.parts?.[0]?.text || "";
 
-      const jsonStart = text.indexOf("{");
-      const jsonEnd = text.lastIndexOf("}") + 1;
-      const jsonText = text.substring(jsonStart, jsonEnd);
-      const parsed = JSON.parse(jsonText);
+      const cleaned = text.match(/{[\s\S]*}/)?.[0];
+      if (!cleaned) throw new Error("Invalid JSON format");
 
+      const parsed = JSON.parse(cleaned);
       setPitch(parsed);
       toast.success("Pitch regenerated successfully!");
     } catch (error) {
@@ -140,7 +146,7 @@ export default function PitchResult() {
       </div>
 
       {/* 🟦 Themed Pitch Card */}
-      <div className="w-full max-w-5xl bg-gradient-to-br from-[#1e293b] via-[#0f172a] to-[#1e1b4b] rounded-2xl shadow-2xl p-6 sm:p-8 md:p-10 space-y-6 border border-blue-800/40 transition-all duration-300 hover:shadow-blue-900/30">
+      <div className="w-full max-w-6xl bg-gradient-to-br from-[#1e293b] via-[#0f172a] to-[#1e1b4b] rounded-2xl shadow-2xl p-6 sm:p-8 md:p-10 space-y-6 border border-blue-800/40 transition-all duration-300 hover:shadow-blue-900/30">
         {/* Header */}
         <div className="text-center sm:text-left">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 text-blue-400 break-words">
@@ -198,4 +204,6 @@ export default function PitchResult() {
       </div>
     </div>
   );
-}
+};
+
+export default PitchResult;

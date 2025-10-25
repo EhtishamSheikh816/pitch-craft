@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 import Layout from "./Layout/Layout";
 import Home from "./pages/Home";
@@ -11,16 +13,28 @@ import PitchResult from "./pages/PitchResult";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PitchDetails from "./pages/PitchDetails";
-import { Toaster } from "react-hot-toast";
+import Reviews from "./pages/Reviews";
+import Error from "./pages/Error";
+import LoaderPage from "./components/Loader";
 
 function App() {
+  const [loading, setLoading] = useState(true);
+
+  // Simulate loading delay (2.5s)
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 2500);
+    return () => clearTimeout(timer);
+  }, []);
+
   const router = createBrowserRouter([
     {
       path: "/",
       element: <Layout />,
+      errorElement: <Error />,
       children: [
         { index: true, element: <Home /> },
         { path: "/about", element: <About /> },
+        { path: "/reviews", element: <Reviews /> },
         { path: "/contact", element: <Contact /> },
         {
           path: "/generate",
@@ -46,10 +60,7 @@ function App() {
             </ProtectedRoute>
           ),
         },
-        {
-          path: "/pitch/:id",
-          element: <PitchDetails />,
-        },
+        { path: "/pitch/:id", element: <PitchDetails /> },
         { path: "/signup", element: <Signup /> },
         { path: "/login", element: <Login /> },
       ],
@@ -58,8 +69,14 @@ function App() {
 
   return (
     <>
-      <RouterProvider router={router} />
-      <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
+      {loading ? (
+        <LoaderPage />
+      ) : (
+        <>
+          <RouterProvider router={router} />
+          <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
+        </>
+      )}
     </>
   );
 }

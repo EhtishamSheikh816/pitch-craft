@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import {
   Mail,
   Phone,
@@ -22,6 +24,14 @@ const Contact = () => {
     message: "",
   });
 
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      offset: 120,
+      once: true,
+    });
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
@@ -39,14 +49,23 @@ const Contact = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="flex justify-center items-center text-center px-4 sm:px-6 lg:px-8 py-16 bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#020617] text-white">
+      <section
+        data-aos="fade-up"
+        className="flex justify-center items-center text-center px-4 sm:px-6 lg:px-8 py-16 bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#020617] text-white"
+      >
         <div className="max-w-5xl mx-auto">
-          <div className="inline-flex items-center space-x-2 bg-white/10 text-blue-300 px-4 py-2 rounded-full mb-6 backdrop-blur-md">
+          <div
+            className="inline-flex items-center space-x-2 bg-white/10 text-blue-300 px-4 py-2 rounded-full mb-6 backdrop-blur-md"
+            data-aos="zoom-in"
+          >
             <Sparkles size={16} />
             <span className="text-sm font-semibold">Get In Touch</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+          <h1
+            data-aos="fade-up"
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
+          >
             Let’s Start a
             <br />
             <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
@@ -54,23 +73,26 @@ const Contact = () => {
             </span>
           </h1>
 
-          <p className="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto">
+          <p
+            data-aos="fade-up"
+            data-aos-delay="150"
+            className="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto"
+          >
             Have questions about Pitch Craft? Want to learn more about our
             AI-powered platform? We're here to help you create winning pitches.
           </p>
         </div>
       </section>
 
-      {/* Contact Form & Info */}
       <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-10">
           {/* Form */}
-          <div className="lg:col-span-2">
+          <div data-aos="fade-right" className="lg:col-span-2">
             <div className="bg-white/10 backdrop-blur-md p-6 sm:p-10 rounded-2xl border border-white/10">
               <h2 className="text-3xl font-bold mb-6">Send Us a Message</h2>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid sm:grid-cols-2 gap-6">
-                  <div>
+                  <div data-aos="fade-up" data-aos-delay="100">
                     <label className="block text-sm font-semibold mb-2 text-gray-300">
                       Full Name
                     </label>
@@ -84,7 +106,7 @@ const Contact = () => {
                       required
                     />
                   </div>
-                  <div>
+                  <div data-aos="fade-up" data-aos-delay="200">
                     <label className="block text-sm font-semibold mb-2 text-gray-300">
                       Email Address
                     </label>
@@ -100,7 +122,7 @@ const Contact = () => {
                   </div>
                 </div>
 
-                <div>
+                <div data-aos="fade-up" data-aos-delay="300">
                   <label className="block text-sm font-semibold mb-2 text-gray-300">
                     Subject
                   </label>
@@ -115,7 +137,7 @@ const Contact = () => {
                   />
                 </div>
 
-                <div>
+                <div data-aos="fade-up" data-aos-delay="400">
                   <label className="block text-sm font-semibold mb-2 text-gray-300">
                     Message
                   </label>
@@ -131,6 +153,8 @@ const Contact = () => {
                 </div>
 
                 <button
+                  data-aos="zoom-in"
+                  data-aos-delay="500"
                   type="submit"
                   className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-2xl transition flex items-center justify-center space-x-2"
                 >
@@ -141,9 +165,7 @@ const Contact = () => {
             </div>
           </div>
 
-          {/* Info Section */}
-          <div className="space-y-6">
-            {/* Contact Details */}
+          <div data-aos="fade-left" className="space-y-6">
             <div className="bg-white/10 backdrop-blur-md p-6 sm:p-8 rounded-2xl border border-white/10">
               <h3 className="text-2xl font-bold mb-6">Contact Information</h3>
               <div className="space-y-6">
@@ -175,7 +197,12 @@ const Contact = () => {
                     text: "Mon - Fri: 9:00 AM - 6:00 PM\nSat - Sun: Closed",
                   },
                 ].map((item, i) => (
-                  <div key={i} className="flex items-start space-x-4">
+                  <div
+                    key={i}
+                    data-aos="fade-up"
+                    data-aos-delay={i * 100}
+                    className="flex items-start space-x-4"
+                  >
                     <div
                       className={`bg-gradient-to-br ${item.color} w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0`}
                     >
@@ -201,8 +228,10 @@ const Contact = () => {
               </div>
             </div>
 
-            {/* Social Links */}
-            <div className="bg-white/10 backdrop-blur-md p-6 sm:p-8 rounded-2xl border border-white/10">
+            <div
+              data-aos="zoom-in"
+              className="bg-white/10 backdrop-blur-md p-6 sm:p-8 rounded-2xl border border-white/10"
+            >
               <h3 className="text-2xl font-bold mb-6">Follow Us</h3>
               <div className="flex flex-wrap gap-3">
                 {[Linkedin, Twitter, Facebook, Instagram].map((Icon, i) => (
@@ -217,8 +246,10 @@ const Contact = () => {
               </div>
             </div>
 
-            {/* Quick Support */}
-            <div className="bg-gradient-to-br from-blue-600 to-purple-600 p-8 rounded-2xl text-center sm:text-left">
+            <div
+              data-aos="fade-up"
+              className="bg-gradient-to-br from-blue-600 to-purple-600 p-8 rounded-2xl text-center sm:text-left"
+            >
               <MessageSquare
                 className="text-white mb-4 mx-auto sm:mx-0"
                 size={32}
@@ -236,8 +267,7 @@ const Contact = () => {
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
+      <section data-aos="fade-up" className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold mb-3">
@@ -269,6 +299,8 @@ const Contact = () => {
             ].map((faq, i) => (
               <div
                 key={i}
+                data-aos="fade-up"
+                data-aos-delay={i * 100}
                 className="bg-white/10 backdrop-blur-md p-5 sm:p-6 rounded-xl border border-white/10"
               >
                 <h3 className="text-lg sm:text-xl font-bold mb-2">{faq.q}</h3>
@@ -279,8 +311,10 @@ const Contact = () => {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-500/5 text-center">
+      <section
+        data-aos="zoom-in"
+        className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-500/5 text-center"
+      >
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
             Ready to Get Started?
@@ -289,7 +323,7 @@ const Contact = () => {
             Don’t wait — start creating your winning pitch today!
           </p>
           <Link
-            to="/"
+            to="/generate"
             className="bg-white text-blue-700 px-8 py-3 rounded-full text-lg font-semibold hover:shadow-2xl transition-all inline-block"
           >
             Create Your First Pitch

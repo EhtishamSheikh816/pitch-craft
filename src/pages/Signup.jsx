@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Mail,
   Lock,
@@ -17,6 +17,8 @@ import {
 } from "../config/firebase";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -33,6 +35,10 @@ const Signup = () => {
 
   const password = watch("password");
 
+  useEffect(() => {
+    AOS.init({ duration: 800, once: true });
+  }, []);
+
   const onSubmit = async (data) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(
@@ -46,22 +52,23 @@ const Signup = () => {
 
       toast.success("🎉 Account created successfully!");
       reset();
-      navigate("/");
+      navigate("/generate");
     } catch (error) {
       console.error(error);
       toast.error(error.message || "Signup failed. Please try again.");
     }
   };
 
-  const handleBack = () => {
-    navigate(-1);
-  };
+  const handleBack = () => navigate(-1);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#020617] text-white flex items-center justify-center px-4 py-12">
-      <div className="max-w-6xl w-full grid lg:grid-cols-2 gap-12 items-center">
+      <div
+        className="max-w-6xl w-full grid lg:grid-cols-2 gap-12 items-center"
+        data-aos="fade-up"
+      >
         {/* Left Side - Branding */}
-        <div className="hidden lg:block">
+        <div className="hidden lg:block" data-aos="fade-right">
           <button
             onClick={handleBack}
             className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors mb-8"
@@ -77,7 +84,7 @@ const Signup = () => {
             </span>
           </div>
 
-          <h1 className="text-5xl font-bold mb-6">
+          <h1 className="text-5xl font-bold mb-6 leading-tight">
             Start Creating
             <br />
             <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
@@ -108,7 +115,7 @@ const Signup = () => {
         </div>
 
         {/* Right Side - Signup Form */}
-        <div className="w-full">
+        <div className="w-full" data-aos="fade-left">
           <button
             onClick={handleBack}
             className="lg:hidden flex items-center space-x-2 text-gray-300 hover:text-white transition-colors mb-6"
@@ -129,7 +136,7 @@ const Signup = () => {
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
               {/* Full Name */}
-              <div>
+              <div data-aos="fade-up" data-aos-delay="100">
                 <label className="block text-sm font-semibold mb-2 text-gray-300">
                   Full Name
                 </label>
@@ -155,7 +162,7 @@ const Signup = () => {
               </div>
 
               {/* Email */}
-              <div>
+              <div data-aos="fade-up" data-aos-delay="200">
                 <label className="block text-sm font-semibold mb-2 text-gray-300">
                   Email Address
                 </label>
@@ -185,7 +192,7 @@ const Signup = () => {
               </div>
 
               {/* Password */}
-              <div>
+              <div data-aos="fade-up" data-aos-delay="300">
                 <label className="block text-sm font-semibold mb-2 text-gray-300">
                   Password
                 </label>
@@ -222,7 +229,7 @@ const Signup = () => {
               </div>
 
               {/* Confirm Password */}
-              <div>
+              <div data-aos="fade-up" data-aos-delay="400">
                 <label className="block text-sm font-semibold mb-2 text-gray-300">
                   Confirm Password
                 </label>
@@ -264,6 +271,7 @@ const Signup = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
+                data-aos="zoom-in"
                 className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg font-semibold hover:shadow-2xl transition-all disabled:opacity-60"
               >
                 {isSubmitting ? "Creating Account..." : "Create Account"}

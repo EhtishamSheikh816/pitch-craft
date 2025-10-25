@@ -3,10 +3,11 @@ import { useForm } from "react-hook-form";
 import { Loader2, Lightbulb } from "lucide-react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { useNavigate } from "react-router-dom";
+import GenerateLoader from "../components/GenerateLoader"; 
 
 const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
 
-export default function CreatePitch() {
+const CreatePitch = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
@@ -37,7 +38,6 @@ export default function CreatePitch() {
       const jsonEnd = text.lastIndexOf("}") + 1;
       const parsed = JSON.parse(text.substring(jsonStart, jsonEnd));
 
-      // Navigate to result page and pass data
       navigate("/pitch-result", { state: { pitch: parsed, ideaData: data } });
     } catch (err) {
       console.error("Error:", err);
@@ -47,14 +47,24 @@ export default function CreatePitch() {
     }
   };
 
+  if (loading) {
+    return <GenerateLoader />;
+  }
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#020617] text-white px-6 py-10">
-      <h1 className="text-4xl sm:text-5xl font-bold mb-6 text-center">
-        Create Your{" "}
+      <h1 className="text-4xl sm:text-5xl font-bold mb-4 sm:mb-6 text-center">
+        AI-Powered Startup{" "}
         <span className="bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
-          AI Pitch
+          Pitch Generator
         </span>
       </h1>
+
+      <p className="text-base sm:text-lg text-gray-400 text-center max-w-2xl mx-auto leading-relaxed pb-6">
+        Transform your startup idea into a professional, investor-ready pitch
+        with the power of AI. Get instant feedback, refine your message, and
+        craft a winning story effortlessly.
+      </p>
 
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -83,17 +93,11 @@ export default function CreatePitch() {
           disabled={loading}
           className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 py-3 rounded-lg font-semibold hover:shadow-xl transition-all"
         >
-          {loading ? (
-            <>
-              <Loader2 className="animate-spin" size={20} /> Generating...
-            </>
-          ) : (
-            <>
-              <Lightbulb size={20} /> Generate Pitch
-            </>
-          )}
+          <Lightbulb size={20} /> Generate Pitch
         </button>
       </form>
     </div>
   );
-}
+};
+
+export default CreatePitch;

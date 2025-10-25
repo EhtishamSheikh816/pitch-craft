@@ -4,7 +4,7 @@ import { db } from "../config/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { ArrowLeft, FileText, Lightbulb, Target, Palette } from "lucide-react";
 
-export default function PitchDetails() {
+const PitchDetails = () => {
   const { id } = useParams();
   const [pitch, setPitch] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -140,4 +140,6 @@ export default function PitchDetails() {
       </div>
     </div>
   );
-}
+};
+
+export default PitchDetails;

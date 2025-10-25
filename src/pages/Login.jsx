@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Mail,
   Lock,
@@ -11,7 +11,9 @@ import {
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, signInWithEmailAndPassword } from "../config/firebase";
-import toast from "react-hot-toast"; // ✅ Import toast
+import toast from "react-hot-toast";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -24,18 +26,19 @@ const Login = () => {
     formState: { errors, isSubmitting },
   } = useForm();
 
+  useEffect(() => {
+    AOS.init({ duration: 800, once: true });
+  }, []);
+
   // ✅ Handle login
   const onSubmit = async (data) => {
     try {
       await signInWithEmailAndPassword(auth, data.email, data.password);
-
-      toast.success("Login successful 🎉");
-      navigate("/"); // redirect to homepage
+      toast.success("🎉 Login successful!");
+      navigate("/generate");
     } catch (error) {
       console.error("Firebase login error:", error);
       setFirebaseError(error.message);
-
-      // ✅ show error toast
       toast.error("Invalid email or password ❌");
     }
   };
@@ -44,9 +47,12 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#020617] text-white flex items-center justify-center px-4 py-12">
-      <div className="max-w-6xl w-full grid lg:grid-cols-2 gap-12 items-center">
+      <div
+        className="max-w-6xl w-full grid lg:grid-cols-2 gap-12 items-center"
+        data-aos="fade-up"
+      >
         {/* Left Section */}
-        <div className="hidden lg:block">
+        <div className="hidden lg:block" data-aos="fade-right">
           <button
             onClick={handleBack}
             className="flex items-center space-x-2 text-gray-300 hover:text-white transition mb-8"
@@ -62,7 +68,7 @@ const Login = () => {
             </span>
           </div>
 
-          <h1 className="text-5xl font-bold mb-6">
+          <h1 className="text-5xl font-bold mb-6 leading-tight">
             Welcome Back to
             <br />
             <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
@@ -93,7 +99,7 @@ const Login = () => {
         </div>
 
         {/* Right Section - Login Form */}
-        <div className="w-full">
+        <div className="w-full" data-aos="fade-left">
           <button
             onClick={handleBack}
             className="lg:hidden flex items-center space-x-2 text-gray-300 hover:text-white transition mb-6"
@@ -103,8 +109,8 @@ const Login = () => {
           </button>
 
           <div className="bg-white/10 backdrop-blur-md p-8 sm:p-10 rounded-2xl border border-white/10">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl sm:text-4xl font-bold mb-2">Sign In</h2>
+            <div className="text-center mb-8" data-aos="zoom-in">
+              <h2 className="text-3xl sm:text-4xl font-bold mb-2">Login</h2>
               <p className="text-gray-300">
                 Welcome back! Please enter your details
               </p>
@@ -112,7 +118,7 @@ const Login = () => {
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
               {/* Email */}
-              <div>
+              <div data-aos="fade-up" data-aos-delay="100">
                 <label className="block text-sm font-semibold mb-2 text-gray-300">
                   Email Address
                 </label>
@@ -136,7 +142,7 @@ const Login = () => {
               </div>
 
               {/* Password */}
-              <div>
+              <div data-aos="fade-up" data-aos-delay="200">
                 <label className="block text-sm font-semibold mb-2 text-gray-300">
                   Password
                 </label>
@@ -172,7 +178,11 @@ const Login = () => {
               </div>
 
               {/* Remember Me */}
-              <div className="flex items-center justify-between">
+              <div
+                className="flex items-center justify-between"
+                data-aos="fade-up"
+                data-aos-delay="300"
+              >
                 <label className="flex items-center space-x-2">
                   <input
                     type="checkbox"
@@ -192,13 +202,18 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
+                data-aos="zoom-in"
                 className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg font-semibold hover:shadow-2xl transition-all disabled:opacity-60"
               >
                 {isSubmitting ? "Signing In..." : "Sign In"}
               </button>
 
               {/* Signup Link */}
-              <p className="text-center text-sm text-gray-300 mt-6">
+              <p
+                className="text-center text-sm text-gray-300 mt-6"
+                data-aos="fade-up"
+                data-aos-delay="400"
+              >
                 Don’t have an account?{" "}
                 <Link
                   to="/signup"
